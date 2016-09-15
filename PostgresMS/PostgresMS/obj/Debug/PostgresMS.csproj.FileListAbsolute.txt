@@ -10,3 +10,4 @@ K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\bin\Debug\Npgsq
 K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\bin\Debug\Npgsql.xml
 K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.Form1.resources
 K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.Settings.resources
+K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.Query.resources

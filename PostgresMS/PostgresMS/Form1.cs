@@ -17,7 +17,11 @@ namespace PostgresMS
         private DataTable dt = new DataTable();
 
         private Settings form = new Settings();
+        private Query queryForm = new Query();
 
+        private NpgsqlConnection conn;
+
+        private String query;
         public Form1()
         {
             InitializeComponent();
@@ -37,28 +41,17 @@ namespace PostgresMS
                 string connString = String.Format("Server={0};Port={1};" +
                     "User Id={2};Password={3};Database={4};", textBox1.Text, textBox2.Text, textBox3.Text, textBox4.Text, textBox5.Text);
                 // Инициализация данных для подключения
-                NpgsqlConnection conn = new NpgsqlConnection(connString);
+                conn = new NpgsqlConnection(connString);
                 conn.Open();
                 label7.Text = "Соединение установлено";
                 label7.ForeColor = Color.Green;
-                // Формирование и выполнение запроса
-                string sql = "SELECT * FROM users";
-                NpgsqlDataAdapter da = new NpgsqlDataAdapter(sql, conn);
 
-                ds.Reset();
-                // Заполнение данными из запроса
-                da.Fill(ds);
-                dt = ds.Tables[0];
-                dataGridView1.DataSource = dt;
-
-                //Закрытие соединения
-                conn.Close();
             }
 
             catch (Exception msg)
             {
                 // Вывод ошибки
-                MessageBox.Show(msg.ToString());
+                MessageBox.Show(msg.ToString(), "Ошибка");
                 throw;
             }
         }
@@ -76,6 +69,48 @@ namespace PostgresMS
             textBox3.Text = form.textBox3.Text;
             textBox4.Text = form.textBox4.Text;
             textBox5.Text = form.textBox5.Text;
+        }
+
+        private void отсоединитьсяToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //Закрытие соединения
+                if (conn != null)
+                {
+                    conn.Close();
+                    conn = null;
+                    label7.Text = "Соединение остановлено";
+                    label7.ForeColor = Color.SteelBlue;
+                }
+                
+            }
+            catch (Exception msg)
+            {
+                // Вывод ошибки
+                MessageBox.Show(msg.ToString());
+                throw;
+            }
+
+        }
+
+        private void выполнитьЗапросToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (conn != null)
+            {
+                queryForm.ShowDialog();
+                query = queryForm.textBox1.Text;
+
+                NpgsqlDataAdapter da = new NpgsqlDataAdapter(query, conn);
+
+                ds.Reset();
+                // Заполнение данными из запроса
+                da.Fill(ds);
+                dt = ds.Tables[0];
+                dataGridView1.DataSource = dt;
+            }
+            else
+                MessageBox.Show("Для выполнения запроса необходимо подключиться к базе данных:\nФайл->Настройки подключения", "Ошибка");
         }
 
     }

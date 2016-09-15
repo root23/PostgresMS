@@ -46,6 +46,8 @@
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.настройкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.отсоединитьсяToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.выполнитьЗапросToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -186,7 +188,9 @@
             // файлToolStripMenuItem
             // 
             this.файлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.настройкиToolStripMenuItem});
+            this.настройкиToolStripMenuItem,
+            this.выполнитьЗапросToolStripMenuItem,
+            this.отсоединитьсяToolStripMenuItem});
             this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
             this.файлToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.файлToolStripMenuItem.Text = "Файл";
@@ -204,6 +208,20 @@
             this.выходToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
             this.выходToolStripMenuItem.Text = "Выход";
             this.выходToolStripMenuItem.Click += new System.EventHandler(this.выходToolStripMenuItem_Click);
+            // 
+            // отсоединитьсяToolStripMenuItem
+            // 
+            this.отсоединитьсяToolStripMenuItem.Name = "отсоединитьсяToolStripMenuItem";
+            this.отсоединитьсяToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.отсоединитьсяToolStripMenuItem.Text = "Отсоединиться";
+            this.отсоединитьсяToolStripMenuItem.Click += new System.EventHandler(this.отсоединитьсяToolStripMenuItem_Click);
+            // 
+            // выполнитьЗапросToolStripMenuItem
+            // 
+            this.выполнитьЗапросToolStripMenuItem.Name = "выполнитьЗапросToolStripMenuItem";
+            this.выполнитьЗапросToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.выполнитьЗапросToolStripMenuItem.Text = "Выполнить запрос";
+            this.выполнитьЗапросToolStripMenuItem.Click += new System.EventHandler(this.выполнитьЗапросToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -257,6 +275,8 @@
         private System.Windows.Forms.ToolStripMenuItem файлToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem выходToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem настройкиToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem отсоединитьсяToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem выполнитьЗапросToolStripMenuItem;
     }
 }
 

@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace PostgresMS
 {
-    public partial class Settings : Form
+    public partial class Query : Form
     {
-        public Settings()
+        public Query()
         {
             InitializeComponent();
         }
