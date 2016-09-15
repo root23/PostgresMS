@@ -1,0 +1,10 @@
+K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\bin\Debug\PostgresMS.exe.config
+K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\bin\Debug\PostgresMS.exe
+K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\bin\Debug\PostgresMS.pdb
+K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.csprojResolveAssemblyReference.cache
+K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.Properties.Resources.resources
+K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.csproj.GenerateResource.Cache
+K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.exe
+K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.pdb
+K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\bin\Debug\Npgsql.dll
+K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\bin\Debug\Npgsql.xml
