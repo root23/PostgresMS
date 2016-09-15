@@ -8,3 +8,5 @@ K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\Postg
 K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.pdb
 K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\bin\Debug\Npgsql.dll
 K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\bin\Debug\Npgsql.xml
+K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.Form1.resources
+K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.Settings.resources
