@@ -11,3 +11,9 @@ K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\bin\Debug\Npgsq
 K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.Form1.resources
 K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.Settings.resources
 K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.Query.resources
+G:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\bin\Debug\PostgresMS.exe.config
+G:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.exe
+G:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.pdb
+K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.MainInterface.resources
+K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.SelectDB.resources
+K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.AddTable.resources

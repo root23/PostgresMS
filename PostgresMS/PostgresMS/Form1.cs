@@ -13,13 +13,11 @@ namespace PostgresMS
 {
     public partial class Form1 : Form
     {
-        private DataSet ds = new DataSet();
-        private DataTable dt = new DataTable();
-
         private Settings form = new Settings();
         private Query queryForm = new Query();
+        private MainInterface tabs = new MainInterface();
 
-        private NpgsqlConnection conn;
+        public NpgsqlConnection conn;
 
         private String query;
         public Form1()
@@ -45,12 +43,15 @@ namespace PostgresMS
                 conn.Open();
                 label7.Text = "Соединение установлено";
                 label7.ForeColor = Color.Green;
-
+                tabs.conn = conn;
+                tabs.ShowDialog();
             }
 
             catch (Exception msg)
             {
                 // Вывод ошибки
+                label7.Text = "Ошибка установления соединения";
+                label7.ForeColor = Color.Red;
                 MessageBox.Show(msg.ToString(), "Ошибка");
                 throw;
             }
@@ -93,25 +94,5 @@ namespace PostgresMS
             }
 
         }
-
-        private void выполнитьЗапросToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (conn != null)
-            {
-                queryForm.ShowDialog();
-                query = queryForm.textBox1.Text;
-
-                NpgsqlDataAdapter da = new NpgsqlDataAdapter(query, conn);
-
-                ds.Reset();
-                // Заполнение данными из запроса
-                da.Fill(ds);
-                dt = ds.Tables[0];
-                dataGridView1.DataSource = dt;
-            }
-            else
-                MessageBox.Show("Для выполнения запроса необходимо подключиться к базе данных:\nФайл->Настройки подключения", "Ошибка");
-        }
-
     }
 }
