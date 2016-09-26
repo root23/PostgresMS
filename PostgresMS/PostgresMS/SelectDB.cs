@@ -42,6 +42,7 @@ namespace PostgresMS
                     val = reader[0].ToString();
                     comboBox1.Items.Add(val);
                 }
+                reader.Close();
             }
         }
 

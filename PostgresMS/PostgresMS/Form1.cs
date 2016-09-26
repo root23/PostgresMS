@@ -61,17 +61,7 @@ namespace PostgresMS
         {
             Application.Exit();
         }
-
-        private void настройкиToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            form.ShowDialog();
-            textBox1.Text = form.textBox1.Text;
-            textBox2.Text = form.textBox2.Text;
-            textBox3.Text = form.textBox3.Text;
-            textBox4.Text = form.textBox4.Text;
-            textBox5.Text = form.textBox5.Text;
-        }
-
+        
         private void отсоединитьсяToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -94,5 +84,6 @@ namespace PostgresMS
             }
 
         }
+
     }
 }

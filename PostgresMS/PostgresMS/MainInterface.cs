@@ -55,7 +55,7 @@ namespace PostgresMS
             {
                 string query = "SELECT table_name FROM information_schema.tables  where table_schema='public' ORDER BY table_name;";
                 NpgsqlDataAdapter da = new NpgsqlDataAdapter(query, conn);
-
+                
                 ds.Reset();
                 // Заполнение данными из запроса
                 da.Fill(ds);
@@ -71,23 +71,21 @@ namespace PostgresMS
                 dataGridView1.Columns.Add(col);
                 
                 dataGridView1.DataSource = dt;
+
             }
             else
                 MessageBox.Show("Для выполнения запроса необходимо подключиться к базе данных:\nФайл->Настройки подключения", "Ошибка");
         }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            UpdateData();
-        }
-
+        
         private void MainInterface_Load(object sender, EventArgs e)
         {
             bName = conn.Database;
             dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            InitializeTreeView();
         }
+        
 
-        private void button5_Click(object sender, EventArgs e)
+        private void сменитьБазуДанныхToolStripMenuItem_Click(object sender, EventArgs e)
         {
             dbSelector.conn = conn;
             dbSelector.ShowDialog();
@@ -97,14 +95,62 @@ namespace PostgresMS
                 bName = dbSelector.bName;
                 conn.ChangeDatabase(bName);
             }
-
-                            
-   
+            
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void выходToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void обновитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UpdateData();
+        }
+
+        private void добавитьТаблицуToolStripMenuItem_Click(object sender, EventArgs e)
         {
             tableForm.ShowDialog();
+            tabControl1.SelectedIndex = 1;
         }
+
+        private void InitializeTreeView()
+        {
+            treeView1.BeginUpdate();
+            treeView1.Nodes.Add(String.Format("Сервер {0}", conn.Host));
+            string query = "SELECT datname FROM pg_database WHERE datistemplate = false";
+
+            using (NpgsqlCommand command = new NpgsqlCommand(query, conn))
+            {
+                string val;
+                NpgsqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    val = reader[0].ToString();
+                    treeView1.Nodes[0].Nodes.Add(val);
+                }
+                reader.Close();
+            }
+
+            using (DataTable schema = conn.GetSchema("Tables"))
+            {
+                foreach (DataRow row in schema.Rows)
+                {
+                    treeView1.Nodes[0].Nodes[1].Nodes.Add(row["table_name"].ToString());
+                }
+
+            }
+            
+            treeView1.EndUpdate();
+
+            /*treeView1.BeginUpdate();
+            treeView1.Nodes.Add("Parent");
+            treeView1.Nodes[0].Nodes.Add("Child 1");
+            treeView1.Nodes[0].Nodes.Add("Child 2");
+            treeView1.Nodes[0].Nodes[1].Nodes.Add("Grandchild");
+            treeView1.Nodes[0].Nodes[1].Nodes[0].Nodes.Add("Great Grandchild");
+            treeView1.EndUpdate();*/
+        }
+        
     }
 }
