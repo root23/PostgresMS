@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -48,8 +49,12 @@
             this.выполнитьЗапросToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
             this.treeView1 = new System.Windows.Forms.TreeView();
+            this.label1 = new System.Windows.Forms.Label();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.добавитьТаблицуToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.удалитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.закрытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -58,6 +63,7 @@
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -235,6 +241,13 @@
             this.panel2.Size = new System.Drawing.Size(211, 615);
             this.panel2.TabIndex = 3;
             // 
+            // treeView1
+            // 
+            this.treeView1.Location = new System.Drawing.Point(3, 31);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(208, 580);
+            this.treeView1.TabIndex = 4;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -244,12 +257,32 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Сервер";
             // 
-            // treeView1
+            // contextMenuStrip1
             // 
-            this.treeView1.Location = new System.Drawing.Point(3, 31);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(208, 580);
-            this.treeView1.TabIndex = 4;
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.добавитьТаблицуToolStripMenuItem1,
+            this.удалитьToolStripMenuItem,
+            this.закрытьToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(175, 92);
+            // 
+            // добавитьТаблицуToolStripMenuItem1
+            // 
+            this.добавитьТаблицуToolStripMenuItem1.Name = "добавитьТаблицуToolStripMenuItem1";
+            this.добавитьТаблицуToolStripMenuItem1.Size = new System.Drawing.Size(174, 22);
+            this.добавитьТаблицуToolStripMenuItem1.Text = "Добавить таблицу";
+            // 
+            // удалитьToolStripMenuItem
+            // 
+            this.удалитьToolStripMenuItem.Name = "удалитьToolStripMenuItem";
+            this.удалитьToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.удалитьToolStripMenuItem.Text = "Удалить";
+            // 
+            // закрытьToolStripMenuItem
+            // 
+            this.закрытьToolStripMenuItem.Name = "закрытьToolStripMenuItem";
+            this.закрытьToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.закрытьToolStripMenuItem.Text = "Закрыть";
             // 
             // MainInterface
             // 
@@ -274,6 +307,7 @@
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -303,6 +337,10 @@
         private System.Windows.Forms.ToolStripMenuItem sQLToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem выполнитьЗапросToolStripMenuItem;
         private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem добавитьТаблицуToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem удалитьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem закрытьToolStripMenuItem;
 
     }
 }

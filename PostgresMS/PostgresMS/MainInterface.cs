@@ -14,7 +14,7 @@ namespace PostgresMS
     public partial class MainInterface : Form
     {
         private SelectDB dbSelector = new SelectDB();
-        private AddTable tableForm = new AddTable();
+        private Settings newTable = new Settings();
 
         private DataSet ds = new DataSet();
         private DataTable dt = new DataTable();
@@ -34,18 +34,20 @@ namespace PostgresMS
             DataGridViewRow row = dataGridView1.Rows[index];
             string tName = row.Cells["table_name"].Value.ToString();
 
-            string delQuery = String.Format("DROP TABLE {0}", tName);
-            NpgsqlCommand command = new NpgsqlCommand(delQuery, conn);
-            command.ExecuteScalar();
-
-
-            //NpgsqlDataAdapter da = new NpgsqlDataAdapter(delQuery, conn);
-
+            if (tName != "")
+            {
+                string delQuery = String.Format("DROP TABLE {0}", tName);
+                NpgsqlCommand command = new NpgsqlCommand(delQuery, conn);
+                command.ExecuteNonQuery();
+            }
+            
             UpdateData();
         }
         
         private void UpdateData()
         {
+            //Заполнение древа сервера
+            InitializeTreeView();
             //Очистка таблицы с данными
             dataGridView1.SelectAll();
             dataGridView1.ClearSelection();
@@ -81,7 +83,10 @@ namespace PostgresMS
         {
             bName = conn.Database;
             dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
+            treeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseDoubleClick);
             InitializeTreeView();
+            contextMenuStrip1.ItemClicked += new ToolStripItemClickedEventHandler(this.menuStrip_ItemClicked);
         }
         
 
@@ -110,12 +115,12 @@ namespace PostgresMS
 
         private void добавитьТаблицуToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            tableForm.ShowDialog();
             tabControl1.SelectedIndex = 1;
         }
 
         private void InitializeTreeView()
         {
+            treeView1.Nodes.Clear();
             treeView1.BeginUpdate();
             treeView1.Nodes.Add(String.Format("Сервер {0}", conn.Host));
             string query = "SELECT datname FROM pg_database WHERE datistemplate = false";
@@ -124,33 +129,71 @@ namespace PostgresMS
             {
                 string val;
                 NpgsqlDataReader reader = command.ExecuteReader();
+                DataTable dt = reader.GetSchemaTable();
                 while (reader.Read())
-                {
+                {                    
                     val = reader[0].ToString();
-                    treeView1.Nodes[0].Nodes.Add(val);
+                    treeView1.Nodes[0].Nodes.Add(val);                    
                 }
                 reader.Close();
             }
 
-            using (DataTable schema = conn.GetSchema("Tables"))
+            //getting tables
+            for (int i = 0; i < treeView1.Nodes[0].Nodes.Count; i++)
             {
-                foreach (DataRow row in schema.Rows)
+                conn.ChangeDatabase(treeView1.Nodes[0].Nodes[i].Text);
+                string q = "SELECT table_name FROM information_schema.tables  where table_schema='public' ORDER BY table_name;";
+                NpgsqlCommand cmd = new NpgsqlCommand(q, conn);
+                NpgsqlDataReader rd = cmd.ExecuteReader();
+                while (rd.Read())
                 {
-                    treeView1.Nodes[0].Nodes[1].Nodes.Add(row["table_name"].ToString());
-                }
-
+                    treeView1.Nodes[0].Nodes[i].Nodes.Add(rd[0].ToString());
+                }           
+                rd.Close();                
+               
             }
             
             treeView1.EndUpdate();
 
-            /*treeView1.BeginUpdate();
-            treeView1.Nodes.Add("Parent");
-            treeView1.Nodes[0].Nodes.Add("Child 1");
-            treeView1.Nodes[0].Nodes.Add("Child 2");
-            treeView1.Nodes[0].Nodes[1].Nodes.Add("Grandchild");
-            treeView1.Nodes[0].Nodes[1].Nodes[0].Nodes.Add("Great Grandchild");
-            treeView1.EndUpdate();*/
         }
-        
+
+        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            treeView1.SelectedNode = e.Node;
+            if (e.Button == MouseButtons.Right && e.Node.Level == 1)
+            {
+                contextMenuStrip1.Show(treeView1, e.Location);  
+            }
+            
+        }
+
+        private void menuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            string bName = treeView1.SelectedNode.Text;
+            if (e.ClickedItem.Text == "Добавить таблицу")
+            {
+                newTable.ShowDialog();                
+                string tName = newTable.textBox1.Text;
+                conn.ChangeDatabase(tName);
+                string query = String.Format("CREATE TABLE {0}(id int);", tName);
+
+                NpgsqlCommand com = new NpgsqlCommand(query, conn);
+                com.ExecuteNonQuery();
+                UpdateData();
+            }
+
+            
+        }
+
+        void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Node.Level == 1)
+            {
+                conn.ChangeDatabase(e.Node.Text);
+                UpdateData();
+            }
+        }
+
+
     }
 }
