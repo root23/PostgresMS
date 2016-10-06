@@ -47,18 +47,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddTable.cs">
+    <Compile Include="AboutBox1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddTable.Designer.cs">
-      <DependentUpon>AddTable.cs</DependentUpon>
+    <Compile Include="AboutBox1.Designer.cs">
+      <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
+    <Compile Include="IniFiles.cs" />
     <Compile Include="MainInterface.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,23 +68,14 @@
     <Compile Include="Query.Designer.cs">
       <DependentUpon>Query.cs</DependentUpon>
     </Compile>
-    <Compile Include="SelectDB.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SelectDB.Designer.cs">
-      <DependentUpon>SelectDB.cs</DependentUpon>
-    </Compile>
     <Compile Include="Settings.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="AddTable.resx">
-      <DependentUpon>AddTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="AboutBox1.resx">
+      <DependentUpon>AboutBox1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainInterface.resx">
       <DependentUpon>MainInterface.cs</DependentUpon>
@@ -105,9 +91,6 @@
     </Compile>
     <EmbeddedResource Include="Query.resx">
       <DependentUpon>Query.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SelectDB.resx">
-      <DependentUpon>SelectDB.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>

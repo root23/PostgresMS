@@ -7,22 +7,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 using Npgsql;
 
 namespace PostgresMS
 {
     public partial class MainInterface : Form
     {
-        private SelectDB dbSelector = new SelectDB();
-        private Settings newTable = new Settings();
+        private Query que = new Query();
+        private Settings settings = new Settings();
 
         private DataSet ds = new DataSet();
         private DataTable dt = new DataTable();
 
-        public NpgsqlConnection conn;
+        public string[] conf = new string[5];
 
-        private string bName;
-
+        public NpgsqlConnection conn = null;
+        
         public MainInterface()
         {
             InitializeComponent();
@@ -30,18 +31,7 @@ namespace PostgresMS
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            int index = e.RowIndex;
-            DataGridViewRow row = dataGridView1.Rows[index];
-            string tName = row.Cells["table_name"].Value.ToString();
-
-            if (tName != "")
-            {
-                string delQuery = String.Format("DROP TABLE {0}", tName);
-                NpgsqlCommand command = new NpgsqlCommand(delQuery, conn);
-                command.ExecuteNonQuery();
-            }
-            
-            UpdateData();
+           
         }
         
         private void UpdateData()
@@ -52,57 +42,28 @@ namespace PostgresMS
             dataGridView1.SelectAll();
             dataGridView1.ClearSelection();
             dataGridView1.Columns.Clear();
-
-            if (conn != null)
-            {
-                string query = "SELECT table_name FROM information_schema.tables  where table_schema='public' ORDER BY table_name;";
-                NpgsqlDataAdapter da = new NpgsqlDataAdapter(query, conn);
-                
-                ds.Reset();
-                // Заполнение данными из запроса
-                da.Fill(ds);
-                dt = ds.Tables[0];
-
-
-                DataGridViewButtonColumn col = new DataGridViewButtonColumn();
-                col.HeaderText = "Удаление";
-                col.Text = "Удалить";
-                col.Name = "btn";
-                col.UseColumnTextForButtonValue = true;
-
-                dataGridView1.Columns.Add(col);
-                
-                dataGridView1.DataSource = dt;
-
-            }
-            else
-                MessageBox.Show("Для выполнения запроса необходимо подключиться к базе данных:\nФайл->Настройки подключения", "Ошибка");
         }
-        
+
         private void MainInterface_Load(object sender, EventArgs e)
         {
-            bName = conn.Database;
+            label3.Text = "Не подключено";
+            label3.ForeColor = Color.Red;
+
+            //Загрузка конфигурации
+            FileStream file = new FileStream("settings.cfg", FileMode.Open, FileAccess.Read);
+            StreamReader reader = new StreamReader(file);
+            for (int i = 0; i < 5; i++)
+                conf[i] = reader.ReadLine();
+            reader.Close();
+            dataGridView1.ReadOnly = true;
             dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
             treeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseDoubleClick);
-            InitializeTreeView();
             contextMenuStrip1.ItemClicked += new ToolStripItemClickedEventHandler(this.menuStrip_ItemClicked);
+
+            treeView1.Nodes.Add("Сервер 127.0.0.1");
         }
         
-
-        private void сменитьБазуДанныхToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            dbSelector.conn = conn;
-            dbSelector.ShowDialog();
-
-            if (bName != dbSelector.bName)
-            {
-                bName = dbSelector.bName;
-                conn.ChangeDatabase(bName);
-            }
-            
-        }
-
         private void выходToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
@@ -110,7 +71,8 @@ namespace PostgresMS
 
         private void обновитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UpdateData();
+            if (conn != null)
+                UpdateData();
         }
 
         private void добавитьТаблицуToolStripMenuItem_Click(object sender, EventArgs e)
@@ -169,29 +131,71 @@ namespace PostgresMS
 
         private void menuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            string bName = treeView1.SelectedNode.Text;
-            if (e.ClickedItem.Text == "Добавить таблицу")
-            {
-                newTable.ShowDialog();                
-                string tName = newTable.textBox1.Text;
-                conn.ChangeDatabase(tName);
-                string query = String.Format("CREATE TABLE {0}(id int);", tName);
-
-                NpgsqlCommand com = new NpgsqlCommand(query, conn);
-                com.ExecuteNonQuery();
-                UpdateData();
-            }
-
             
+        }
+
+        void ShowDataFromTable(string tableName, string bName)
+        {
+            if (conn.Database != bName)
+                conn.ChangeDatabase(bName);
+            
+            string query = String.Format("SELECT * FROM {0}", tableName);
+
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(query, conn);
+            ds.Reset();
+            da.Fill(ds);
+            dt = ds.Tables[0];
+            dataGridView1.DataSource = dt;
         }
 
         void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
+            if (e.Node.Level == 0)
+            {
+                if (conn == null)
+                {
+                    string connString = String.Format("Server={0};Port={1};" +
+                                      "User Id={2};Password={3};Database={4};", conf[0], conf[1], conf[2], conf[3], conf[4]);
+                    conn = new NpgsqlConnection(connString);
+                    conn.Open();
+                    UpdateData();
+                    label3.Text = String.Format("Подключено: {0}", conn.Host);
+                    label3.ForeColor = Color.Green;
+                }
+            }
+
             if (e.Node.Level == 1)
             {
                 conn.ChangeDatabase(e.Node.Text);
                 UpdateData();
             }
+
+            if (e.Node.Level == 2)
+            {
+                ShowDataFromTable(e.Node.Text, e.Node.Parent.Text);
+            }
+        }
+
+        private void выполнитьЗапросToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (conn != null)
+            {
+                que.ShowDialog();
+                tabControl1.SelectedIndex = 2;
+                string query = que.textBox1.Text;
+            }
+            
+        }
+
+        private void оПрограммеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox1 a = new AboutBox1();
+            a.ShowDialog();
+        }
+
+        private void настройкиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            settings.ShowDialog();
         }
 
 
