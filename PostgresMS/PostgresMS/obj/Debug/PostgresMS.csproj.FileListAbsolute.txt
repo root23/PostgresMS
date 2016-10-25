@@ -18,13 +18,11 @@ G:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\bin\Debug\Postg
 G:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\bin\Debug\Npgsql.dll
 G:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\bin\Debug\Npgsql.xml
 G:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.csprojResolveAssemblyReference.cache
-G:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.AddTable.resources
-G:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.Form1.resources
 G:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.MainInterface.resources
 G:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.Properties.Resources.resources
 G:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.Query.resources
-G:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.SelectDB.resources
 G:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.Settings.resources
 G:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.csproj.GenerateResource.Cache
 K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.AboutBox1.resources
 K:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.Settings.resources
+G:\Projects\3 курс\ТРПО\PostgresMS\PostgresMS\PostgresMS\obj\Debug\PostgresMS.AboutBox1.resources

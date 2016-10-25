@@ -60,10 +60,36 @@ namespace PostgresMS
             treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
             treeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseDoubleClick);
             contextMenuStrip1.ItemClicked += new ToolStripItemClickedEventHandler(this.menuStrip_ItemClicked);
-
+            tabControl1.SelectedIndexChanged += new EventHandler(tabControl1_SelectedIndexChanged);
             treeView1.Nodes.Add("Сервер 127.0.0.1");
         }
-        
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControl1.SelectedIndex == 2)
+            {
+                ClearQueryResult();
+                if (conn != null)
+                {
+                    comboBox1.Items.Clear();
+                    string query = "SELECT datname FROM pg_database WHERE datistemplate = false";
+
+                    using (NpgsqlCommand command = new NpgsqlCommand(query, conn))
+                    {
+                        string val;
+                        NpgsqlDataReader reader = command.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            val = reader[0].ToString();
+                            comboBox1.Items.Add(val);
+                        }
+                        reader.Close();
+                    }
+                }
+                
+            }
+        }
+
         private void выходToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
@@ -138,14 +164,21 @@ namespace PostgresMS
         {
             if (conn.Database != bName)
                 conn.ChangeDatabase(bName);
-            
+
             string query = String.Format("SELECT * FROM {0}", tableName);
 
-            NpgsqlDataAdapter da = new NpgsqlDataAdapter(query, conn);
-            ds.Reset();
-            da.Fill(ds);
-            dt = ds.Tables[0];
-            dataGridView1.DataSource = dt;
+            NpgsqlCommand command = new NpgsqlCommand(query, conn);
+
+            using (NpgsqlDataReader dr = command.ExecuteReader())
+            {
+                if (dr.HasRows)
+                {
+                    DataTable dt = new DataTable();
+                    dt.Load(dr);
+                    dataGridView1.DataSource = dt;
+                    dr.Close();
+                }
+            }
         }
 
         void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -196,6 +229,66 @@ namespace PostgresMS
         private void настройкиToolStripMenuItem_Click(object sender, EventArgs e)
         {
             settings.ShowDialog();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            dataGridView2.Visible = true;
+            dataGridView2.SelectAll();
+            dataGridView2.ClearSelection();
+            dataGridView2.Columns.Clear();
+            string bName = comboBox1.GetItemText(comboBox1.SelectedItem);
+
+            if (conn.Database != bName)
+                conn.ChangeDatabase(bName);
+
+            string query = richTextBox1.Text;
+
+            if (query.Contains("SELECT") || query.Contains("select"))
+            {
+                NpgsqlCommand command = new NpgsqlCommand(query, conn);
+
+                using (NpgsqlDataReader dr = command.ExecuteReader())
+                {
+                    if (dr.HasRows)
+                    {
+                        DataTable dt = new DataTable();
+                        dt.Load(dr);
+                        dataGridView2.DataSource = dt;
+                        dr.Close();
+                    }
+                }
+            }
+            else
+            {
+                using (var cmd = new NpgsqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = query;
+                    int rowsaffected = cmd.ExecuteNonQuery();
+                    if (rowsaffected > 0)
+                    {
+                        dataGridView2.Visible = false;
+                        richTextBox2.Visible = true;
+                        string result = String.Format("Было изменено {0} строк. Запрос выполнен успешно!", rowsaffected);
+                        richTextBox2.Text = result;
+                    }
+                }
+
+                
+            }
+        }
+
+        private void ClearQueryResult()
+        {
+            dataGridView2.Visible = false;
+            richTextBox2.Text = "";
+            richTextBox2.Visible = false;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            ClearQueryResult();
         }
 
 
