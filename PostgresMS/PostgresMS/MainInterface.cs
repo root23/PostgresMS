@@ -14,12 +14,8 @@ namespace PostgresMS
 {
     public partial class MainInterface : Form
     {
-        private Query que = new Query();
         private Settings settings = new Settings();
-
-        private DataSet ds = new DataSet();
-        private DataTable dt = new DataTable();
-
+        
         public string[] conf = new string[5];
 
         public NpgsqlConnection conn = null;
@@ -46,8 +42,8 @@ namespace PostgresMS
 
         private void MainInterface_Load(object sender, EventArgs e)
         {
-            label3.Text = "Не подключено";
-            label3.ForeColor = Color.Red;
+            toolStripStatusLabel2.Text = "Не подключено";
+            toolStripStatusLabel2.ForeColor = Color.Red;
 
             //Загрузка конфигурации
             FileStream file = new FileStream("settings.cfg", FileMode.Open, FileAccess.Read);
@@ -66,7 +62,7 @@ namespace PostgresMS
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tabControl1.SelectedIndex == 2)
+            if (tabControl1.SelectedIndex == 1)
             {
                 ClearQueryResult();
                 if (conn != null)
@@ -178,6 +174,8 @@ namespace PostgresMS
                     dataGridView1.DataSource = dt;
                     dr.Close();
                 }
+                else
+                    MessageBox.Show("Таблица не содержит данные", "Информация");
             }
         }
 
@@ -192,8 +190,8 @@ namespace PostgresMS
                     conn = new NpgsqlConnection(connString);
                     conn.Open();
                     UpdateData();
-                    label3.Text = String.Format("Подключено: {0}", conn.Host);
-                    label3.ForeColor = Color.Green;
+                    toolStripStatusLabel2.Text = String.Format("Подключено: {0}", conn.Host);
+                    toolStripStatusLabel2.ForeColor = Color.Green;
                 }
             }
 
@@ -208,18 +206,7 @@ namespace PostgresMS
                 ShowDataFromTable(e.Node.Text, e.Node.Parent.Text);
             }
         }
-
-        private void выполнитьЗапросToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (conn != null)
-            {
-                que.ShowDialog();
-                tabControl1.SelectedIndex = 2;
-                string query = que.textBox1.Text;
-            }
-            
-        }
-
+        
         private void оПрограммеToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AboutBox1 a = new AboutBox1();
@@ -246,16 +233,27 @@ namespace PostgresMS
 
             if (query.Contains("SELECT") || query.Contains("select"))
             {
-                NpgsqlCommand command = new NpgsqlCommand(query, conn);
-
-                using (NpgsqlDataReader dr = command.ExecuteReader())
+                using (var cmd = new NpgsqlCommand())
                 {
-                    if (dr.HasRows)
+                    cmd.Connection = conn;
+                    cmd.CommandText = query;
+
+                    try
                     {
-                        DataTable dt = new DataTable();
-                        dt.Load(dr);
-                        dataGridView2.DataSource = dt;
-                        dr.Close();
+                        using (NpgsqlDataReader dr = cmd.ExecuteReader())
+                        {
+                            if (dr.HasRows)
+                            {
+                                DataTable dt = new DataTable();
+                                dt.Load(dr);
+                                dataGridView2.DataSource = dt;
+                                dr.Close();
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message.ToString(), "Ошибка");
                     }
                 }
             }
@@ -265,14 +263,23 @@ namespace PostgresMS
                 {
                     cmd.Connection = conn;
                     cmd.CommandText = query;
-                    int rowsaffected = cmd.ExecuteNonQuery();
-                    if (rowsaffected > 0)
+
+                    try
                     {
-                        dataGridView2.Visible = false;
-                        richTextBox2.Visible = true;
-                        string result = String.Format("Было изменено {0} строк. Запрос выполнен успешно!", rowsaffected);
-                        richTextBox2.Text = result;
+                        int rowsaffected = cmd.ExecuteNonQuery();
+                        if (rowsaffected > 0)
+                        {
+                            dataGridView2.Visible = false;
+                            richTextBox2.Visible = true;
+                            string result = String.Format("Было изменено {0} строк. Запрос выполнен успешно!", rowsaffected);
+                            richTextBox2.Text = result;
+                        }
                     }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.Message.ToString(), "Ошибка");
+                    }
+                    
                 }
 
                 
